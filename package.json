@@ -1,23 +1,29 @@
 {
-  "name": "fn",
-  "version": "0.0.0",
+  "name": "fn-ui-text-rich-editor",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve test.application",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "app.start": "ng serve test.application --port 4201",
+    "lib.build": "ng build library",
+    "lib.watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "npm.publish": "cd dist/library && npm publish"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.0",
+    "@angular/cdk": "^17.3.6",
     "@angular/common": "^17.3.0",
     "@angular/compiler": "^17.3.0",
     "@angular/core": "^17.3.0",
     "@angular/forms": "^17.3.0",
+    "@angular/material": "^17.3.6",
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@gleb216/fn.color.picker": "^0.0.4",
+    "dompurify": "^3.1.2",
+    "quill": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -26,6 +32,7 @@
     "@angular-devkit/build-angular": "^17.3.6",
     "@angular/cli": "^17.3.3",
     "@angular/compiler-cli": "^17.3.0",
+    "@types/dompurify": "^3.0.5",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

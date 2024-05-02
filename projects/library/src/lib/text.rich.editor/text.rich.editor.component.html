@@ -1,0 +1,51 @@
+ <div class="ql-toolbar  ql-snow" [class]="toolbarClass()" #toolbar>
+  @if (!hideToolbar()){
+   @for (item of toolbarItems(); track $index) {
+    @switch (item) {
+     @case (eToolBarItems.tbiClear) {
+      <button mat-icon-button class="button-popup" (click)="formatRemove()" title="Remove format" [disabled]="disable">
+       <mat-icon svgIcon="iconFormatClear"></mat-icon>
+      </button>
+     }
+     @case (eToolBarItems.tbiDelimiter) {
+      <span class="delimiter"></span>
+     }
+     @case (eToolBarItems.tbiBackgroundColor) {
+      <fn-color-picker-icon [customIcon]="customIconColorBottleTemplate" [color]="format.background" [disabled]="disable"  (colorChanged)="formatChange('background', $event)"/>
+     }
+     @case (eToolBarItems.tbiFontColor) {
+      <fn-color-picker-icon [customIcon]="customIconFontColorTemplate" [color]="format.color" [disabled]="disable" (colorChanged)="formatChange('color', $event)"/>
+     }
+     @case (eToolBarItems.tbiFontBold) {
+      <button mat-icon-button class="button-popup" [class.is-selected]="format.bold" (click)="formatChange('bold',!format.bold)" title="Bold" [disabled]="disable">
+       <mat-icon svgIcon="iconFontBold"></mat-icon>
+      </button>
+     }
+     @case (eToolBarItems.tbiFontItalic) {
+      <button mat-icon-button class="button-popup" [class.is-selected]="format.italic" (click)="formatChange('italic',!format.italic)" title="Italic" [disabled]="disable">
+       <mat-icon svgIcon="iconFontItalic"></mat-icon>
+      </button>
+     }
+     @case (eToolBarItems.tbiFontUnderline) {
+      <button mat-icon-button class="button-popup" [class.is-selected]="format.underline" (click)="formatChange('underline',!format.underline)" title="underline" [disabled]="disable">
+       <mat-icon svgIcon="iconFontUnderline"></mat-icon>
+      </button>
+     }
+     @case (eToolBarItems.tbiFontStrike) {
+      <button mat-icon-button class="button-popup" [class.is-selected]="format.strike" (click)="formatChange('strike',!format.strike)" title="Strike" [disabled]="disable">
+       <mat-icon svgIcon="iconFontStrike"></mat-icon>
+      </button>
+     }
+    }
+   }
+  }
+ </div>
+
+<div class="quill-editor" [style.min-Height]="minHeightPx() | numberToPx" [class]="containerClass()" #editor></div>
+
+<ng-template #customIconFontColorTemplate>
+ <mat-icon svgIcon="iconColorFont"/>
+</ng-template>
+<ng-template #customIconColorBottleTemplate>
+ <mat-icon svgIcon="iconColorBottle"/>
+</ng-template>

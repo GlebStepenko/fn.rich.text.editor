@@ -1,3 +1,26 @@
-<main class="main">
- <fn-rich-text-editor/>
+<main class="main"  [formGroup]="formData">
+ <fn-text-rich-editor
+  placeholder="xxxx"
+  minHeightPx="300"
+  toolbarPopup="true"
+  formControlName="text"
+  [readonly]="readOnly"
+  (onChange)="onChange()"
+ />
 </main>
+
+<button mat-button class="button-other-color" (click)="setText()">
+ <span>setText</span>
+</button>
+<button mat-button class="button-other-color" (click)="setHtml()">
+ <span>setHtml</span>
+</button>
+
+<button mat-button class="button-other-color" (click)="changeReadOnlyInput()">
+ <span>changeReadOnlyInput</span>
+</button>
+
+<button mat-button class="button-other-color" (click)="changeReadOnlyReactive()">
+ <span>changeReadOnlyReactive</span>
+</button>
+

@@ -1,15 +1,76 @@
-import { Component } from '@angular/core';
-import {LibraryComponent} from '../../../library/src/lib/library.component';
+import {Component, OnInit} from '@angular/core';
+// import {TextRichEditorComponent} from '../../../../dist/library';
+import {TextRichEditorComponent} from '../../../library/src/lib/text.rich.editor/text.rich.editor.component';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {MatButton} from '@angular/material/button';
+
+interface IControlForm {
+  text: FormControl<string>;
+}
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    LibraryComponent
+    TextRichEditorComponent,
+    ReactiveFormsModule,
+    MatButton
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'test.application';
+  formData: FormGroup<IControlForm>;
+  readOnly = false;
+
+  
+  constructor() {
+    this.formData = new FormGroup<IControlForm>({
+      text: new FormControl({value: '<p><span style="color: rgb(242, 181, 0);">dddd</span></p>', disabled: false}, {nonNullable: true}),
+    });
+    
+    
+    this.formData.valueChanges.subscribe({
+      next: res => {
+        console.log(res.text);
+      }
+    })
+  }
+  
+  onChange() {
+  }
+  
+  setText() {
+    this.formData.patchValue({
+      text: 'green'
+    })
+  }
+  
+  setHtml() {
+    this.formData.patchValue({
+      text: '<p>1111</p><p><span style="color: rgb(119, 165, 84);">222</span></p><p><span style="background-color: rgb(49, 76, 182);">33</span></p><p>4</p>'
+    })
+  }
+  
+  changeReadOnlyInput() {
+    this.readOnly = !this.readOnly;
+  }
+  
+  changeReadOnlyReactive() {
+    const readOnly = !this.readOnly;
+    if (readOnly) {
+      this.formData.controls.text.disable()
+    } else {
+      this.formData.controls.text.enable()
+    }
+    
+  }
+  
+  ngOnInit(): void {
+
+
+  }
+  
 }
+

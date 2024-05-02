@@ -5,14 +5,16 @@
   "projects": {
     "library": {
       "projectType": "library",
+
       "root": "projects/library",
       "sourceRoot": "projects/library/src",
       "prefix": "fn",
+
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/library/ng-package.json"
+            "project": "projects/library/ng-package.json",
           },
           "configurations": {
             "production": {
@@ -63,6 +65,7 @@
               "projects/test.application/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/test.application/src/styles.scss"
             ],
             "scripts": []

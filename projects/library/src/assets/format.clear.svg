@@ -1,0 +1,6 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M13.1,0H3.3a.6.6,0,0,0-.6.6V1.7a.6.6,0,0,0,.6.6H6.9L4.6,11.5A.4.4,0,0,0,5,12H7.1a.4.4,0,0,0,.4-.3L9.9,2.3h3.2a.6.6,0,0,0,.6-.6V.6A.6.6,0,0,0,13.1,0Z"/>
+  <path d="M1.1,14H7.9c.6,0,1.1.4,1.1.8v.4c0,.4-.5.8-1.1.8H1.1C.5,16,0,15.6,0,15.2v-.4C0,14.4.5,14,1.1,14Z"/>
+  <line x1="15" y1="15" x2="11" y2="11" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+  <line x1="11" y1="15" x2="15" y2="11" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+</svg>
