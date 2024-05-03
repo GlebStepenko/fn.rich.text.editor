@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@gleb216/fn.color.picker": "^0.0.4",
+    "@gleb216/fn.color.picker": "^0.0.8",
     "dompurify": "^3.1.2",
     "quill": "^2.0.0",
     "rxjs": "~7.8.0",
