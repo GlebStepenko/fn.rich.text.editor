@@ -96,9 +96,10 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit {
     this._setEnable(isDisabled);
   }
 
-  writeValue(value: string): void {
+  writeValue(value: string | {text: string, html: string}): void {
+    const initValue = (typeof value === 'object' && value !== null && 'html' in value) ? value.html : value;
     if (!!this.quillEditor) {
-      const clean = DOMPurify.sanitize(value ?? '', { USE_PROFILES: { html: true } });
+      const clean = DOMPurify.sanitize(initValue ?? '', { USE_PROFILES: { html: true } });
       let content = this.quillEditor.clipboard.convert({html: clean})
       this.quillEditor.setContents(content)
     }

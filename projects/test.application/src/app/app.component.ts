@@ -5,7 +5,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 
 interface IControlForm {
-  text: FormControl<string>;
+  text: FormControl<string | {html: string, text: string} | null>;
 }
 
 @Component({
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit{
   
   constructor() {
     this.formData = new FormGroup<IControlForm>({
-      text: new FormControl({value: '<p><span style="color: rgb(242, 181, 0);">dddd</span></p>', disabled: false}, {nonNullable: true}),
+      text: new FormControl({value: {html: '<p>werq<span style="color: rgb(242, 145, 48);">werqwere</span>wrwer</p>', text: 'werqwerqwerewrwer\n'}, disabled: false}, {nonNullable: true}),
     });
     
     

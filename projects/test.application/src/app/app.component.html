@@ -2,7 +2,8 @@
  <fn-text-rich-editor
   placeholder="xxxx"
   minHeightPx="300"
-  toolbarPopup="true"
+  toolbarClass="rich-text-toolbar"
+  toolbarPopup="false"
   formControlName="text"
   [readonly]="readOnly"
   (onChange)="onChange()"
@@ -23,4 +24,5 @@
 <button mat-button class="button-other-color" (click)="changeReadOnlyReactive()">
  <span>changeReadOnlyReactive</span>
 </button>
+
 
