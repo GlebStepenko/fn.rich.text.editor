@@ -1,4 +1,4 @@
-import {booleanAttribute, ChangeDetectorRef, Component, effect, ElementRef, forwardRef, input, numberAttribute, OnInit, output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {booleanAttribute, ChangeDetectorRef, Component, effect, ElementRef, forwardRef, inject, input, numberAttribute, OnDestroy, OnInit, output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {NumberToPxPipe} from '../pipe/number.to.px/number.to.px.pipe';
 import Quill from 'quill';
@@ -34,7 +34,6 @@ type EditFormat = {
     NumberToPxPipe,
     MatIcon,
     DefaultIconsModule,
-    MatRipple,
     ColorPickerIconComponent,
   ],
   templateUrl: './text.rich.editor.component.html',
@@ -46,7 +45,7 @@ type EditFormat = {
     multi: true
   }],
 })
-export class TextRichEditorComponent implements ControlValueAccessor, OnInit {
+export class TextRichEditorComponent implements ControlValueAccessor, OnInit, OnDestroy {
   @ViewChild('editor', {static: true}) editorElem!: ElementRef;
   @ViewChild('toolbar', {static: true}) toolbarElem!: ElementRef;
   toolbarClass = input<string>('');
@@ -57,20 +56,21 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit {
   placeholder = input<string>('');
   toolbarItems = input<Array<EToolBarItems>>(DefaultToolBar);
   toolbarPopup = input(false, {transform: booleanAttribute});
+  updateOn= input<'change' | 'blur'>('change');
   onChange= output<TEditorChange>();
   eToolBarItems = EToolBarItems;
   format: EditFormat = {};
   quillEditor?: Quill;
   disable: boolean = false;
+  isUpdated: boolean = false;
   onModelChange: ModelChangeFunction = () => {};
   onModelTouched: ModelTouchedFunction = () => {};
-
-  constructor(private readonly _ref: ChangeDetectorRef ) {
-    effect(() => {
-      this._setEnable(this.readonly() ?? false)
-    });
+  readonly #ref = inject(ChangeDetectorRef);
+  
+  constructor( ) {
+    effect(() => this._setEnable(this.readonly() ?? false));
   }
-
+  
   formatRemove(): void {
     const selection: Range | null = this.quillEditor!.getSelection();
     if (selection !== null) {
@@ -114,6 +114,10 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit {
   
   ngOnInit(): void {
     const toolbar = this.hideToolbar() ? false : this.toolbarElem.nativeElement;
+    this.editorElem.nativeElement.addEventListener('focusin', this.#onFocusIn.bind(this));
+    this.editorElem.nativeElement.addEventListener('focusout', this.#onFocusOut.bind(this));
+    
+    
     this.quillEditor = new Quill(this.editorElem.nativeElement, {
       modules: {
         toolbar: toolbar
@@ -128,27 +132,50 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit {
         return
       }
       this.format = this.quillEditor!.getFormat();
-      this._ref.detectChanges();
+      this.#ref.detectChanges();
       this.onModelTouched();
     });
     
     this.quillEditor.on('text-change', (_0: any, _1: any, source: any) => {
+      this.isUpdated = true;
+
       if (this.quillEditor?.root.isConnected) {
         this.format = this.quillEditor!.getFormat();
       }
 
-      let html = this.quillEditor!.getSemanticHTML();
-      const text = this.quillEditor!.getText();
-      
-      if (html === '<p></p>') {
-        html = '';
-      }
-      
-      if (source === 'user') {
-        this.onModelChange({html: html, text});
-        this.onChange.emit({html, text});
+      if ( (source === 'user') && (this.updateOn() === 'change') )  {
+        this.#updateModel();
       }
     });
+  }
+  
+  ngOnDestroy(): void {
+    if (this.editorElem) {
+      this.editorElem.nativeElement.removeEventListener('focusin', this.#onFocusIn);
+      this.editorElem.nativeElement.removeEventListener('focusout', this.#onFocusOut);
+    }
+  }
+  
+  #onFocusIn(): void{
+    this.isUpdated = false;
+  }
+  
+  #onFocusOut(): void{
+    if ( (this.isUpdated) && (this.updateOn() === 'blur') )  {
+      this.#updateModel();
+    }
+  }
+  
+  
+  #updateModel(): void {
+    let html = this.quillEditor!.getSemanticHTML();
+    const text = this.quillEditor!.getText();
+    
+    if (html === '<p></p>') {
+      html = '';
+    }
+    this.onModelChange({html: html, text});
+    this.onChange.emit({html, text});
   }
 }
 
