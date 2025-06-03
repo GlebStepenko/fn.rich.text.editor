@@ -7,7 +7,6 @@ import {DefaultToolBar} from '../editor.const';
 import {MatIcon} from '@angular/material/icon';
 import {Range} from 'quill/core/selection';
 import {DefaultIconsModule} from '../module/default.icons/default.icons.module';
-import {MatRipple} from '@angular/material/core';
 import {ColorPickerIconComponent} from '@gleb216/fn.color.picker';
 import {TEditorChange} from '../editor.type';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
@@ -100,7 +99,7 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit, On
     const initValue = (typeof value === 'object' && value !== null && 'html' in value) ? value.html : value;
     if (!!this.quillEditor) {
       const clean = DOMPurify.sanitize(initValue ?? '', { USE_PROFILES: { html: true } });
-      let content = this.quillEditor.clipboard.convert({html: clean})
+      let content = this.quillEditor.clipboard.convert({html: clean});
       this.quillEditor.setContents(content)
     }
   }
@@ -139,7 +138,7 @@ export class TextRichEditorComponent implements ControlValueAccessor, OnInit, On
     this.quillEditor.on('text-change', (_0: any, _1: any, source: any) => {
       this.isUpdated = true;
 
-      if (this.quillEditor?.root.isConnected) {
+      if (this.quillEditor?.root.isConnected && source !== 'api') {
         this.format = this.quillEditor!.getFormat();
       }
 
